@@ -52,3 +52,5 @@ export type Sys = {
   sunrise: number
   sunset: number
 }
+
+export type OpenWeatherTempScale = 'metric' | 'imperial';

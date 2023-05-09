@@ -1,4 +1,9 @@
-// TODO: background script
+import { setCitiesToLS, setOptionsToLS } from '../utils/storage'
+
 chrome.runtime.onInstalled.addListener(() => {
-  // TODO: on installed function
-})
+  setCitiesToLS([]);
+  setOptionsToLS({
+    tempScale: 'metric',
+    homeCity: 'Meerut',
+  });
+});
