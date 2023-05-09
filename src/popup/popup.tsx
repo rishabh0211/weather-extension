@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import 'fontsource-roboto';
 import { Paper, IconButton, InputBase, Box, Grid } from '@material-ui/core'
-import { Add as AddIcon } from '@material-ui/icons'
+import { Add as AddIcon, PictureInPicture as PictureInPictureIcon } from '@material-ui/icons'
 
-import WeatherCard from './WeatherCard'
+import WeatherCard from '../components/WeatherCard'
 import { getCitiesFromLS, setCitiesToLS, getOptionsFromLS, setOptionsToLS, LocalStorageOptions } from '../utils/storage';
 
 import './popup.css'
+import { Messages } from '../utils/message';
 
 const App: React.FC<{}> = () => {
   const [cities, setCities] = useState(['meerut', 'bangalore', 'error']);
@@ -45,6 +46,17 @@ const App: React.FC<{}> = () => {
     setOptionsToLS(updatedOptions).then(() => setOptions(updatedOptions));
   }
 
+  const handleOverlayClick = () => {
+    chrome.tabs.query({
+      active: true
+    }, (tabs) => {
+      if (tabs.length > 0) {
+        console.log({ tabs });
+        chrome.tabs.sendMessage(tabs[tabs.length - 1].id, Messages.TOGGLE_OVERLAY);
+      }
+    })
+  }
+
   if (!options) {
     return <div>Getting options!</div>
   }
@@ -63,6 +75,9 @@ const App: React.FC<{}> = () => {
           </IconButton>
           <IconButton onClick={handleTempScaleChange}>
             {options.tempScale === 'metric' ? '\u2103' : '\u2109'}
+          </IconButton>
+          <IconButton onClick={handleOverlayClick}>
+            <PictureInPictureIcon />
           </IconButton>
         </Box>
       </Paper>

@@ -4,6 +4,8 @@ import { Card, CardContent, Typography, Box, CardActions, Button } from '@materi
 import { fetchWeatherData } from '../../utils/api'
 import { OpenWeatherTempScale, WeatherApiResponse } from '../../utils/types';
 
+import './WeatherCard.css';
+
 type WeatherCardProps = {
   city: string;
   onDelete?: () => void;
@@ -27,7 +29,11 @@ const WeatherCardContainer: React.FC<{
           </CardContent>
           <CardActions>
             {onDelete && (
-              <Button color='secondary' onClick={onDelete}>Delete</Button>
+              <Button color='secondary' onClick={onDelete}>
+                <Typography className='weatherCard-body'>
+                  Delete
+                </Typography>
+              </Button>
             )}
           </CardActions>
         </Card>
@@ -53,7 +59,8 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ city, onDelete, tempScale }) 
   if (cardState == 'loading' || cardState == 'error') {
     return (
       <WeatherCardContainer onDelete={onDelete}>
-        <Typography variant='body1'>
+        <Typography className='weatherCard-title'>{city}</Typography>
+        <Typography className='weatherCard-body'>
           {
             cardState === 'loading' ?
               'Loading...'
@@ -67,9 +74,9 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ city, onDelete, tempScale }) 
 
   return (
     <WeatherCardContainer onDelete={onDelete}>
-      <Typography variant='h5'>{city}</Typography>
-      <Typography variant='body1'>{Math.round(weatherData.main.temp)}</Typography>
-      <Typography variant='body1'>Feels like: {Math.round(weatherData.main.feels_like)}</Typography>
+      <Typography className='weatherCard-title'>{city}</Typography>
+      <Typography className='weatherCard-body'>{Math.round(weatherData.main.temp)}</Typography>
+      <Typography className='weatherCard-body'>Feels like: {Math.round(weatherData.main.feels_like)}</Typography>
     </WeatherCardContainer>
   )
 }

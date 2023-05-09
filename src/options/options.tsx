@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 
-import { Box, Button, Card, CardContent, Grid, TextField, Typography } from '@material-ui/core';
+import { Box, Button, Card, CardContent, Grid, Switch, TextField, Typography } from '@material-ui/core';
 import { LocalStorageOptions, getOptionsFromLS, setOptionsToLS } from '../utils/storage';
 
 import 'fontsource-roboto';
@@ -35,6 +35,13 @@ const App: React.FC<{}> = () => {
     });
   }
 
+  const handleOverlayChange = (shouldDisplayOverlay: boolean) => {
+    setOptions({
+      ...options,
+      hasAutoOverlay: shouldDisplayOverlay
+    });
+  };
+
   if (!options) return null;
 
   const isSaving = formState === 'saving';
@@ -57,6 +64,17 @@ const App: React.FC<{}> = () => {
                 fullWidth
                 value={options.homeCity}
                 onChange={handleHomeCityChange}
+                disabled={isSaving}
+              />
+            </Grid>
+            <Grid item>
+              <Typography variant='body1'>
+                Overlay Card on Web Page
+              </Typography>
+              <Switch
+                color='primary'
+                checked={options.hasAutoOverlay}
+                onChange={(event, checked) => handleOverlayChange(checked)}
                 disabled={isSaving}
               />
             </Grid>
